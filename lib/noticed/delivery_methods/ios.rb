@@ -15,6 +15,9 @@ module Noticed
           connection_pool = (!!evaluate_option(:development)) ? development_pool : production_pool
           connection_pool.with do |connection|
             response = connection.push(apn)
+
+              Rails.logger.info "Apnotic response: #{response}"
+
             raise "Timeout sending iOS push notification" unless response
 
             if bad_token?(response) && config[:invalid_token]

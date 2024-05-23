@@ -8,6 +8,7 @@ module Noticed
       required_options :bundle_identifier, :key_id, :team_id, :apns_key, :device_tokens
 
       def deliver
+        debugger
         evaluate_option(:device_tokens).each do |device_token|
           apn = Apnotic::Notification.new(device_token)
           format_notification(apn)
@@ -16,7 +17,8 @@ module Noticed
           connection_pool.with do |connection|
             response = connection.push(apn)
 
-              Rails.logger.info "Apnotic response: #{response}"
+            debugger
+            Rails.logger.info "Apnotic response: #{response}"
 
             raise "Timeout sending iOS push notification" unless response
 
